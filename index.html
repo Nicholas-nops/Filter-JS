@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Desafio</title>
+</head>
+
+<body>
+    <div id="body-content" class="container">
+        <div class="container">
+            <h1>Looking for devs?</h1>
+            <input type="text" placeholder="Insert a name" id="devName" />
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col s6 left-align" id="checkboxes">
+                    <label>
+                        <input type="checkbox" value="Java" id="check-java" class="filled-in" unchecked />
+                        <span>Java</span>
+                    </label>
+                    &nbsp;
+                    <label>
+                        <input type="checkbox" value="JavaScript" id="check-javascript" class="filled-in" unchecked/>
+                        <span>JavaScript</span>
+                    </label>
+                    &nbsp;
+                    <label>
+                        <input type="checkbox" value="Python" id="check-python" class="filled-in"
+                            unchecked />
+                        <span>Python</span>
+                    </label>
+                </div>
+                <div class="col s6 right-align" id="radio-buttons">
+                    <label id="radio-e">
+                        <input name="group1" type="radio" checked />
+                        <span>E</span>
+                    </label>
+                    <label id="radio-ou">
+                        <input name="group1" type="radio" checked />
+                        <span>OU</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h3 id="howDevs"></h3>
+            <div id="peoples" class="container align-right">
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./main.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</html>
