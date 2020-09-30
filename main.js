@@ -1,18 +1,24 @@
 window.addEventListener('load', () => {
-    catchFetch().then(function (result) {
+    handleDevsFetch().then(result => {
         mapUsers(result);
-    });
-})
+    })
+});
 
-function catchFetch() {
-    return fetch('http://localhost:3001/devs').then(function (response) {
-        return response.json();
-    }).then(function (json) {
-        return json;
-    });
+async function handleDevsFetch() {
+    const res = await fetch("http://localhost:3001/devs");
+    const json = await res.json();
+    const data = json.map(item => {
+        treatedName = item.name;
+        treatedName = treatedName.normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '');
+        treatedName = treatedName.toLowerCase();
+        item.devName = treatedName;
+        return item;
+    })
+    return data;
 }
 
-
+let devsFiltered = [];
+let selections = []
 
 function mapUsers(data) {
     howManyDevs(data.length)
@@ -37,8 +43,6 @@ function howManyDevs(data) {
     container.innerHTML = ""
     container.innerHTML += `${data} Dev's searched`
 }
-
-
 
 function loadUser(user) {
     let lang = []
@@ -69,66 +73,67 @@ function loadUser(user) {
     container.innerHTML += content
 }
 
-function filterByName(e) {
+function filterDevs(e) {
     let nameToFilter = e.target.value;
-    var div = document.getElementById('peoples')
-    catchFetch().then(function (result) {
-        let data = result;
-        data = data.filter(item => {
-            return item.name.split(" ")[0].toLowerCase() == nameToFilter.split(" ")[0].toLowerCase();
+    //regex para filtrar o nome tirando espaços,acentos e letras maiusculas
+    nameToFilter = nameToFilter.normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '').toLowerCase();
+
+    const div = document.getElementById('peoples');
+
+    const data = handleDevsFetch().then(result => {
+        const filteredNames = result.filter(item => {
+            return item.devName.includes(`${nameToFilter}`);
         })
-        div.innerHTML = ""
-        mapUsers(data)
-        if (data == "") {
-            mapUsers(result);
+        if (filteredNames != "") {
+            div.innerHTML = ""
+            mapUsers(filteredNames)
+            devsFiltered = filteredNames
         }
     })
-
 }
-
-function filterByJava(e) {
-    const checkOption = e.target.value;
-    const div = document.getElementById('peoples');
-    const javaInput = document.getElementById('check-java');
-    const jsInput = document.getElementById('check-javascript');
-    const pyInput = document.getElementById('check-python');
-
-
-
-    catchFetch().then(function (result) {
-        let data = result;
-
-
-        if (javaInput.checked == true && jsInput.checked == true) {
-            let filtered = data.filter(item => {
-                return item.programmingLanguages.includes('Java') ;
-            })
-            div.innerHTML = "";
-            console.log(filtered);
-        } else {
-
-            let filteredByJava = data.filter(item => {
-                for (let x = 0; x < item.programmingLanguages.length; x++) {
-                    return item.programmingLanguages[x].language == checkOption;
-                }
-            })
-            div.innerHTML = ""
-            mapUsers(filteredByJava)
-            howManyDevs(filteredByJava.length)
-        }
-    });
-}
-
-
 
 
 const inputName = document.getElementById('devName');
+const checkBoxes = document.querySelectorAll('input[type=checkbox]');
+console.log(checkBoxes)
 setTimeout(() => {
-    inputName.addEventListener('keyup', filterByName);
-}, 5000)
+    inputName.addEventListener('input', filterDevs);
+}, 0);
 
+function filterEorOU(languages, condition) {
+    const div = document.getElementById('peoples')
+    console.log(languages, condition)
+    if (devsFiltered.length > 0) {
+        devsFiltered = devsFiltered.filter(dev => {
+            if (condition == "OU") {
+                return dev.programmingLanguages.some(devlang => languages.includes(devlang.language))
+            } else {
+                return dev.programmingLanguages.map(devlang => devlang.language).join("") === languages.join("");
+            }
+        })
+        div.innerHTML = ""
+        mapUsers(devsFiltered);
+    } else {
+        const data = handleDevsFetch().then(result => {
+            const x = result.filter(dev => {
+                if (condition == "OU") {
+                    return dev.programmingLanguages.some(devlang => languages.includes(devlang.language))
+                } else {
+                    return dev.programmingLanguages.map(devlang => devlang.language).join("") === languages.join("");
+                }
+            })
+            div.innerHTML = ""
+            mapUsers(x)
+        })
 
-const checkJava = document.querySelectorAll('input[type=checkbox]');
-checkJava.forEach(item => {
-    item.addEventListener('change', filterByJava)
-})
+    }
+
+}
+const radioButtons = document.querySelectorAll('input[type=radio]');
+radioButtons.forEach((button) => {
+    return button.addEventListener('change', function () {
+        const selections = document.querySelectorAll('[type="checkbox"]:checked');
+        const values = [...selections].map(x => x.value);
+        filterEorOU(values, button.value)
+    })
+});  
