@@ -2,7 +2,7 @@
 
 #Filter JS
 
-### This is a filter develop using JavaScript to filter developers
+### This is a filter developed using JavaScript to filter developers
 
 # Objectives
 * Improve handling with arrays
