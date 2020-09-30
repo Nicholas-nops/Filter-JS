@@ -62,10 +62,10 @@ function loadUser(user) {
     const content =
         `
     <div class="container col s4">
-    <div style="border-radius: 10px;;" class="card-body lighten-3 card-panel green lighten-1 ">
+    <div style="border-radius: 10px;border-style: solid;border-color: #81c784 ;" class="card-body lighten-3 card-panel transparent ">
     <div class=''><img style="border-radius: 50%;" src="${user.img}" width='60px' alt='userimg'/></div>
     <div class='' id="langImg">${lang}</div>
-    <div class=''><label style='color:white'>${user.name}</label></div>
+    <div class=''><label style='color:black'>${user.name}</label></div>
     <div/>
     `
 
