@@ -45,15 +45,15 @@ function howManyDevs(data) {
 }
 
 function loadUser(user) {
-    let lang = []
+    let lang = ""
     const languages = user.languages;
     for (let x = 0; x < languages.length; x++) {
         if (languages[x]['language'] == 'Java') {
-            lang.push(languages[x]['language'])
+            lang += `<img src='./images/java.png' width='28px' height='28px' alt='java'>`
         } else if (languages[x]['language'] == 'Python') {
-            lang.push(languages[x]['language'])
+            lang += `<img src='./images/python.webp' width='28px' height='28px' alt='java'>`
         } else {
-            lang.push(languages[x]['language'])
+            lang += `<img src='./images/javascript.png' width='28px' height='28px' alt='java'>`
         }
     }
     const container = document.getElementById('peoples');
@@ -62,7 +62,7 @@ function loadUser(user) {
     const content =
         `
     <div class="container col s4">
-    <div style="border-radius: 10px;;" class="card-body lighten-3 card-panel blue darken-1 ">
+    <div style="border-radius: 10px;;" class="card-body lighten-3 card-panel green lighten-1 ">
     <div class=''><img style="border-radius: 50%;" src="${user.img}" width='60px' alt='userimg'/></div>
     <div class='' id="langImg">${lang}</div>
     <div class=''><label style='color:white'>${user.name}</label></div>
